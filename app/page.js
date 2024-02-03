@@ -1,95 +1,83 @@
-import Image from "next/image";
+"use client";
 import styles from "./page.module.css";
+import { useState } from "react";
 
 export default function Home() {
+  const confirmations = [
+    "No",
+    "Are you sure?",
+    "Really?",
+    "Certain?",
+    "Final call?",
+    "Positive?",
+    "Pleaseeeeee?",
+    "Confirm?",
+    "Decided?",
+    "Final answer?",
+    "Pretty please?",
+    "I'll be sad",
+    "I'll be very very sad",
+    "I'll be very very very sad",
+    "Ok, I'll stop asking...",
+    "Just kidding, please say yes!!",
+    "Convinced?",
+    "Stand by it?",
+    "Confident?",
+    "Final choice?",
+    "Sure about this?",
+    "Proceed?",
+    "Go on?",
+    "Your decision?",
+    "Sticking to it?",
+    "Continue?",
+    "Go through?",
+    "This is it?",
+    "Pleaseeeeee?",
+    "Are we good?",
+    "Is it okay?",
+    "Can we go?",
+    "Okay to continue?",
+    "Confirm this?",
+    "Is it right?",
+    "Ready to finalize?",
+    "Proceed with this?",
+    // ... add more phrases here until you reach 100
+  ];
+  const [gif, setGif] = useState("/cute-love-bear-roses-ou7zho5oosxnpo6k.gif");
+  const [saidYes, setSaidYes] = useState(false);
+  const [confirmation, setConfirmation] = useState(0);
+  const [fontSize, setFontSize] = useState(16);
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className={styles.main}>
+      <img className={styles["valentine-gif"]} src={gif} alt="valentine-gif" />
+      {saidYes ? (
+        <div className={styles["after-yes"]}>Ok Yayy!!</div>
+      ) : (
+        <h1>Will you be my Valentine?</h1>
+      )}
+      {!saidYes && (
+        <div className={styles["buttons"]}>
+          <button
+            className={styles["yes-btn"]}
+            style={{ fontSize }}
+            onClick={() => {
+              setGif("/bear-kiss-bear-kisses.gif");
+              setSaidYes(true);
+            }}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            Yes
+          </button>
+          <button
+            className={styles["confirmation-btn"]}
+            onClick={() => {
+              setConfirmation((confirmation + 1) % confirmations.length);
+              setFontSize(fontSize + 20);
+            }}
+          >
+            {confirmations[confirmation]}
+          </button>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      )}
+    </div>
   );
 }
