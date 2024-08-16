@@ -1,55 +1,47 @@
 "use client";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Confetti from "react-dom-confetti";
 
 export default function Home() {
-  const confirmations = [
-    "No",
-    "Are you sure?",
-    "Really?",
-    "Certain?",
-    "Final call?",
-    "Positive?",
-    "Pleaseeeeee?",
-    "Confirm?",
-    "Decided?",
-    "Final answer?",
-    "Pretty please?",
-    "I'll be sad",
-    "I'll be very very sad",
-    "I'll be very very very sad",
-    "Ok, I'll stop asking...",
-    "Just kidding, please say yes!!",
-    "Convinced?",
-    "Stand by it?",
-    "Confident?",
-    "Final choice?",
-    "Sure about this?",
-    "Proceed?",
-    "Go on?",
-    "Your decision?",
-    "Sticking to it?",
-    "Continue?",
-    "Go through?",
-    "This is it?",
-    "Pleaseeeeee?",
-    "Are we good?",
-    "Is it okay?",
-    "Can we go?",
-    "Okay to continue?",
-    "Confirm this?",
-    "Is it right?",
-    "Ready to finalize?",
-    "Proceed with this?",
-    // ... add more phrases here until you reach 100
-  ];
+  const [windowSize, setWindowSize] = useState({
+    width: undefined,
+    height: undefined,
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      };
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
   const [gif, setGif] = useState("/cute-love-bear-roses-ou7zho5oosxnpo6k.gif");
   const [saidYes, setSaidYes] = useState(false);
-  const [confirmation, setConfirmation] = useState(0);
-  const [fontSize, setFontSize] = useState(16);
+  const [positionNo, setPositionNo] = useState({});
+  const [confetti, setConfetti] = useState(false);
+
+  const handleNoClick = () => {
+    setPositionNo({
+      position: "absolute",
+      left: `${Math.random() * windowSize.width - 20}px`,
+      top: `${Math.random() * windowSize.height - 20}px`,
+    });
+  };
+
   return (
     <div className={styles.main}>
+      <Confetti active={confetti} />
       <img className={styles["valentine-gif"]} src={gif} alt="valentine-gif" />
+
       {saidYes ? (
         <div className={styles["after-yes"]}>Ok Yayy!!</div>
       ) : (
@@ -59,25 +51,27 @@ export default function Home() {
         <div className={styles["buttons"]}>
           <button
             className={styles["yes-btn"]}
-            style={{ fontSize }}
             onClick={() => {
               setGif("/bear-kiss-bear-kisses.gif");
               setSaidYes(true);
+              setConfetti(true);
             }}
           >
             Yes
           </button>
           <button
+            style={positionNo}
             className={styles["confirmation-btn"]}
-            onClick={() => {
-              setConfirmation((confirmation + 1) % confirmations.length);
-              setFontSize(fontSize + 20);
-            }}
+            onClick={handleNoClick}
+            onMouseOver={handleNoClick}
+            onTouchStart={handleNoClick}
+            tabIndex={-1}
           >
-            {confirmations[confirmation]}
+            No
           </button>
         </div>
       )}
+        <div classname = "credit">Developed by Rohan Bansal </div>
     </div>
   );
 }
