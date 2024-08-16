@@ -71,7 +71,7 @@ export default function Home() {
           </button>
         </div>
       )}
-        <div classname = "credit">Developed by Rohan Bansal </div>
+        <div classname = {styles.credit}>Developed by Rohan Bansal </div>
     </div>
   );
 }
